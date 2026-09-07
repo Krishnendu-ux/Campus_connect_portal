@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Connect Portal</title>
+    <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+    <header class="navbar">
+    <div class="logo-group">
+        <img
+            class="brand-badge"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0RPSw7vAIatjgEWzmAyN0U0yGhotoPc7t0AFMkl0EREp8g0E472trTvM&s=10"
+            alt="RV University logo"/>
+        <div>
+            <span class="university-name">RV UNIVERSITY<sup>®️</sup></span>
+            <p class="sub-dept">School Of Computer Science & Engineering</p>
+        </div>
+    </div>
+    <div class="nav-actions">
+        <a href="#login" class="btn-secondary">Login</a>
+        <a href="#register" class="btn-primary">Register</a>
+    </div></header>
+
+    <section class="hero-banner">
+        <div class="hero-content">
+            <span class="module-tag">CS3301 - FULL STACK DEVELOPMENT</span>
+            <h1>CAMPUS CONNECT PORTAL</h1>
+            <p class="subtitle">Connecting Students, Faculty, and Administrators on a Single Digital Platform</p>
+            <div class="hero-cta-group">
+            <a href="#roles" class="btn-hero-primary">Explore user Portal</a>
+            </div>
+        </div>
+    </section>
+    <section class="section-container">
+        <h2 class="section-title">Campus Life & Portal Highlights</h2>
+        <p class="section-subtitle">Explore the features and benefits of our campus portal</p>
+        <div class="carousel-wrapper">
+            <button class="carousel-btn prev-btn" id="prevBtn" aria-label="Previous slide">&#10094;</button>
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Slide 1 -->
+                 <div class="slide">
+                    <img src="https://www.admissionwala.in/storage/productimages/RV-University-Bengaluru-2.jpg" alt="Slide 1">
+                    <div class="slide-content">Modern University infrastructure and Facilities</div>   
+                </div>
+                <!-- Slide 2 -->
+                <div class="slide">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80" alt="Slide 2">
+                    <div class="slide-content">Collaborative Learning Environment</div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="slide"> 
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80" alt="Slide 3">
+                    <div class="slide-content">Real-Time Academic Management</div>
+                </div>
+            </div>
+            <button class="carousel-btn next" id="nextBtn" aria-label="Next slide">&#10095;</button>
+        </div>
+    </section>
+    <script>
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const wrapper = track.parentElement;
+
+        // Clone edges so last → first (and first → last) can keep sliding forward
+        const firstClone = track.firstElementChild.cloneNode(true);
+        const lastClone = track.lastElementChild.cloneNode(true);
+        track.appendChild(firstClone);
+        track.insertBefore(lastClone, track.firstElementChild);
+
+        let index = 1;
+        let isMoving = false;
+
+        function setPosition(animate) {
+            track.style.transition = animate ? 'transform 0.45s ease' : 'none';
+            track.style.transform = `translateX(-${index * 100}%)`;
+            if (!animate) {
+                track.offsetHeight; // force reflow so the next slide still animates
+            }
+        }
+
+        function goTo(step) {
+            if (isMoving) return;
+            isMoving = true;
+            index += step;
+            setPosition(true);
+        }
+
+        track.addEventListener('transitionend', (event) => {
+            if (event.target !== track || event.propertyName !== 'transform') return;
+
+            const lastIndex = track.children.length - 1;
+            if (index === lastIndex) {
+                index = 1; // jumped onto cloned first → snap to real first
+                setPosition(false);
+            } else if (index === 0) {
+                index = lastIndex - 1; // jumped onto cloned last → snap to real last
+                setPosition(false);
+            }
+            isMoving = false;
+        });
+
+        prevBtn.addEventListener('click', () => goTo(-1));
+        nextBtn.addEventListener('click', () => goTo(1));
+
+        setPosition(false);
+
+        let timer = setInterval(() => goTo(1), 4000);
+        wrapper.addEventListener('mouseenter', () => clearInterval(timer));
+        wrapper.addEventListener('mouseleave', () => {
+            timer = setInterval(() => goTo(1), 4000);
+        });
+    </script>
+</body>
+</html>
