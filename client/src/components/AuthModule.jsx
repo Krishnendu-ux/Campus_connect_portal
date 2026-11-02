@@ -10,13 +10,13 @@ export default function AuthSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
-      alert('Login functionality coming soon!');
+      alert(`Logging in with ${email}`);
     } else {
       if (password !== confirmPassword) {
         alert('Passwords do not match!');
         return;
       }
-      alert('Registration functionality coming soon!');
+      alert(`Logging in with ${email}`);
     }
   };
 

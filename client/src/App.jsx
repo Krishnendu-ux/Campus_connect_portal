@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import AuthSection from './components/AuthModule';
+import StudentPortal from './components/StudentPortal';
 import './style.css';
 
 function initCarousel() {
@@ -58,7 +58,7 @@ function initCarousel() {
   });
 }
 
-function LandingPage() {
+function LandingPage({ onOpenPortal }) {
   useEffect(() => {
     initCarousel();
   }, []);
@@ -89,7 +89,7 @@ function LandingPage() {
           <h1>CAMPUS CONNECT PORTAL</h1>
           <p className="subtitle">Connecting Students, Faculty, and Administrators on a Single Digital Platform</p>
           <div className="hero-cta-group">
-            <a href="#auth-section" className="btn-hero-primary">Explore user Portal</a>
+            <button type="button" onClick={onOpenPortal} style={{ font: 'inherit', cursor: 'pointer' }} className="btn-hero-primary">Explore user Portal</button>
           </div>
         </div>
       </section>
@@ -121,11 +121,11 @@ function LandingPage() {
         <h2 className="section-title">Choose Your Portal View</h2>
         <p className="section-subtitle">Select the role that fits you best</p>
         <div className="portal-cards">
-          <a href="#auth-section" className="portal-card">
+          <button type="button" onClick={onOpenPortal} style={{ font: 'inherit', cursor: 'pointer' }} className="portal-card">
             <div className="portal-icon">🎓</div>
             <h3>Student</h3>
             <p>Access courses, assignments, grades, and campus resources</p>
-          </a>
+          </button>
           <a href="#auth-section" className="portal-card">
             <div className="portal-icon">👨‍🏫</div>
             <h3>Faculty</h3>
@@ -145,11 +145,12 @@ function LandingPage() {
 }
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="*" element={<LandingPage />} />
-    </Routes>
+  const [showPortal, setShowPortal] = useState(false);
+
+  return showPortal ? (
+    <StudentPortal onBackToHome={() => setShowPortal(false)} />
+  ) : (
+    <LandingPage onOpenPortal={() => setShowPortal(true)} />
   );
 }
 
